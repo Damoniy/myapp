@@ -9,6 +9,7 @@ class StudentFormActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        this.title = "New student"
         this.setContentView(R.layout.activity_student_form)
         StudentFormSendButton(this)
     }

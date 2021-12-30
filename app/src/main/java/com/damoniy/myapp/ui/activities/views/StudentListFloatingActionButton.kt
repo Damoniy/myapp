@@ -1,14 +1,14 @@
 package com.damoniy.myapp.ui.activities.views
 
-import android.content.Context
-import android.view.View
+import android.app.Activity
 import com.damoniy.myapp.R
-import com.damoniy.myapp.ui.activities.views.listeners.StudentListButtonListener
+import com.damoniy.myapp.ui.activities.views.listeners.StudentFormButtonListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
-class StudentListFloatingActionButton(context: Context): View(context) {
+class StudentListFloatingActionButton(activity: Activity) {
+
     init {
-        val addBtn: FloatingActionButton = findViewById(R.id.activity_student_list_add_btn)
-        addBtn.setOnClickListener(StudentListButtonListener(context))
+        val button: FloatingActionButton = activity.findViewById(R.id.activity_student_list_add_btn)
+        button.setOnClickListener(StudentFormButtonListener(activity))
     }
 }

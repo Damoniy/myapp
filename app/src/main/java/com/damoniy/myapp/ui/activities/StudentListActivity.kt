@@ -10,9 +10,13 @@ class StudentListActivity: AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "My app"
+        this.title = "Student's List"
         this.setContentView(R.layout.activity_student_list)
-        StudentListView(this)
         StudentListFloatingActionButton(this)
+    }
+
+    override fun onResume() {
+        super.onResume()
+        StudentListView(this)
     }
 }

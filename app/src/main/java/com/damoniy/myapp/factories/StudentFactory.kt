@@ -14,5 +14,6 @@ class StudentFactory: AbstractFactory {
         val tel = activity.findViewById<TextView>(R.id.activity_student_form_tel).text.toString()
         val student = Student(email, name, tel)
         studentDAO.save(student)
+        println(true)
     }
 }

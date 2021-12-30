@@ -1,7 +1,7 @@
 package com.damoniy.myapp.factories
 
-import android.content.Context
+import android.app.Activity
 
 interface AbstractFactory {
-    fun create(context: Context)
+    fun create(activity: Activity)
 }
