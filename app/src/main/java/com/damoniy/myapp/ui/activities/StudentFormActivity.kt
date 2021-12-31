@@ -10,11 +10,14 @@ import com.damoniy.myapp.ui.activities.views.listeners.StudentListButtonListener
 
 class StudentFormActivity : AppCompatActivity() {
 
+    private val keyExtra: String = "student"
+    private val titleEditStudent: String = "Editar aluno"
+    private val titleNewStudent: String = "Cadastrar novo aluno"
+
     var student: Student? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "New student"
         this.setContentView(R.layout.activity_student_form)
         this.update()
         this.createButton()
@@ -26,12 +29,18 @@ class StudentFormActivity : AppCompatActivity() {
     }
 
     private fun update() {
-        if(intent.hasExtra("student")) {
-            student = intent.getSerializableExtra("student") as Student
-            val name: TextView = findViewById(R.id.activity_student_form_name)
-            name.text = student!!.name
+        if(intent.hasExtra(keyExtra)) {
+            student = intent.getSerializableExtra(keyExtra) as Student
+            fillFields()
+            this.title = titleEditStudent
         } else {
             student = Student()
+            this.title = titleNewStudent
         }
+    }
+
+    private fun fillFields() {
+        val name: TextView = findViewById(R.id.activity_student_form_name)
+        name.text = student!!.name
     }
 }

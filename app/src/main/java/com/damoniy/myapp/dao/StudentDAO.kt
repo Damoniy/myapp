@@ -14,6 +14,10 @@ class StudentDAO: DAO<Student> {
     override fun save(t: Student) {
         t.id = idCounter
         students.add(t)
+        this.updateId()
+    }
+
+    private fun updateId() {
         idCounter++
     }
 
@@ -28,5 +32,9 @@ class StudentDAO: DAO<Student> {
 
     override fun getObjectList(): List<Student>{
         return ArrayList(students)
+    }
+
+    fun remove(student: Student) {
+        students.remove(student)
     }
 }
