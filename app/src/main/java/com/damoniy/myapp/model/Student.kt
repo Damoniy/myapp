@@ -1,8 +1,8 @@
-package com.damoniy.myapp.entity
+package com.damoniy.myapp.model
 
 import java.io.Serializable
 
-class Student(var email: String, var name: String, var tel: String): Serializable {
+class Student(var name: String, var email:String, var tel: String): Serializable {
 
     var id: Int = 0
 

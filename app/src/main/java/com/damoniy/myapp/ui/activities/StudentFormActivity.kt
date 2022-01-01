@@ -6,7 +6,7 @@ import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.damoniy.myapp.R
-import com.damoniy.myapp.entity.Student
+import com.damoniy.myapp.model.Student
 import com.damoniy.myapp.factories.AbstractFactory
 import com.damoniy.myapp.factories.StudentFactory
 import com.damoniy.myapp.persistence.Persistence
@@ -64,6 +64,11 @@ class StudentFormActivity : AppCompatActivity() {
 
     private fun fillFields() {
         val name: TextView = findViewById(R.id.activity_student_form_name)
+        val email:TextView = findViewById((R.id.activity_student_form_email))
+        val tel:TextView = findViewById((R.id.activity_student_form_tel))
+
         name.text = student!!.name
+        email.text = student!!.email
+        tel.text = student!!.tel
     }
 }

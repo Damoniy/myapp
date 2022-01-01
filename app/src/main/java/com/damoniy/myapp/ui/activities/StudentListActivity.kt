@@ -6,18 +6,17 @@ import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
 import android.widget.AdapterView
-import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.appcompat.app.AppCompatActivity
 import com.damoniy.myapp.R
-import com.damoniy.myapp.entity.Student
+import com.damoniy.myapp.model.Student
 import com.damoniy.myapp.persistence.Persistence
 import com.damoniy.myapp.ui.activities.views.listeners.StudentFormularyButtonListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class StudentListActivity: AppCompatActivity() {
 
-    private lateinit var arrayAdapter: ArrayAdapter<Student>
+    private lateinit var adapter: StudentListAdapter
     private val studentDAO = Persistence.studentDAO
 
     private val ACTIVITY_TITLE = "Student's List"
@@ -51,13 +50,12 @@ class StudentListActivity: AppCompatActivity() {
 
     private fun captureStudent(item: MenuItem): Student {
         val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val student: Student = arrayAdapter.getItem(menuInfo.position)!!
-        return student
+        return adapter.getItem(menuInfo.position)
     }
 
     private fun update() {
-        this.arrayAdapter.clear()
-        this.arrayAdapter.addAll(studentDAO.getObjectList())
+        this.adapter.clear()
+        this.adapter.addAll(studentDAO.getObjectList())
     }
 
     private fun createButton() {
@@ -71,10 +69,9 @@ class StudentListActivity: AppCompatActivity() {
         registerForContextMenu(studentsListView)
     }
 
-
     private fun initAdapter(studentsListView: ListView) {
-        arrayAdapter = ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1)
-        studentsListView.adapter = arrayAdapter
+        adapter = StudentListAdapter(this)
+        studentsListView.adapter = adapter
     }
 
     private fun editStudent(student: Student) {
@@ -85,6 +82,6 @@ class StudentListActivity: AppCompatActivity() {
 
     private fun removeStudent(student: Student) {
         Persistence.studentDAO.remove(student)
-        this.arrayAdapter.remove(student)
+        this.adapter.remove(student)
     }
 }

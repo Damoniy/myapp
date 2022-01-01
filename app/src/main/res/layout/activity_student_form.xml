@@ -26,11 +26,4 @@
               android:layout_margin="8dp"
               android:inputType="phone"
               android:hint="Telefone" />
-
-    <Button
-            android:id="@+id/activity_student_form_btn_send"
-            android:text="Send"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="12dp"/>
 </LinearLayout>

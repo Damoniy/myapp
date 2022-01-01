@@ -1,14 +1,14 @@
 package com.damoniy.myapp.dao
 
-import com.damoniy.myapp.entity.Student
+import com.damoniy.myapp.model.Student
 
 class StudentDAO: DAO<Student> {
     private val students = ArrayList<Student>()
     private var idCounter = 1
 
     init {
-        this.save(Student("p", "La", "222"))
-        this.save(Student("p", "La", "222"))
+        this.save(Student("Agatha Harkness", "agatha@harkness.com", "+01 (00) 1111-2222"))
+        this.save(Student("Wanda Maximoff", "wanda@maximoff.com", "+01 (00) 1111-2223"))
     }
 
     override fun save(t: Student) {
