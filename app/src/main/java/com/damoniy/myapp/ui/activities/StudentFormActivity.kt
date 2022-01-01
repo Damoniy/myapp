@@ -1,18 +1,22 @@
 package com.damoniy.myapp.ui.activities
 
 import android.os.Bundle
-import android.widget.Button
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.damoniy.myapp.R
 import com.damoniy.myapp.entity.Student
-import com.damoniy.myapp.ui.activities.views.listeners.StudentListButtonListener
+import com.damoniy.myapp.factories.AbstractFactory
+import com.damoniy.myapp.factories.StudentFactory
+import com.damoniy.myapp.persistence.Persistence
 
 class StudentFormActivity : AppCompatActivity() {
 
     private val keyExtra: String = "student"
     private val titleEditStudent: String = "Editar aluno"
     private val titleNewStudent: String = "Cadastrar novo aluno"
+    private val factory: AbstractFactory<StudentFormActivity> = StudentFactory()
 
     var student: Student? = null
 
@@ -20,12 +24,31 @@ class StudentFormActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         this.setContentView(R.layout.activity_student_form)
         this.update()
-        this.createButton()
     }
 
-    private fun createButton() {
-        val button: Button = findViewById(R.id.activity_student_form_btn_send)
-        button.setOnClickListener(StudentListButtonListener(this))
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        this.menuInflater.inflate(R.menu.activity_student_formulary_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId) {
+            R.id.activity_student_formulary_menu_save -> finishFormulary()
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun finishFormulary() {
+        val studentDAO = Persistence.studentDAO
+        factory.create(this)
+
+        if(this.student!!.hasValidId()) {
+            studentDAO.edit(this.student!!)
+        } else {
+            studentDAO.save(this.student!!)
+        }
+
+        this.finish()
     }
 
     private fun update() {
