@@ -1,7 +1,7 @@
 package com.damoniy.myapp.ui.activities
 
+import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.ContextMenu
 import android.view.MenuItem
 import android.view.View
@@ -13,7 +13,6 @@ import com.damoniy.myapp.R
 import com.damoniy.myapp.entity.Student
 import com.damoniy.myapp.persistence.Persistence
 import com.damoniy.myapp.ui.activities.views.listeners.StudentFormularyButtonListener
-import com.damoniy.myapp.ui.activities.views.listeners.StudentListViewListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class StudentListActivity: AppCompatActivity() {
@@ -21,9 +20,11 @@ class StudentListActivity: AppCompatActivity() {
     private lateinit var arrayAdapter: ArrayAdapter<Student>
     private val studentDAO = Persistence.studentDAO
 
+    private val ACTIVITY_TITLE = "Student's List"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        this.title = "Student's List"
+        this.title = ACTIVITY_TITLE
         this.setContentView(R.layout.activity_student_list)
         this.createButton()
         this.configureListView()
@@ -31,19 +32,27 @@ class StudentListActivity: AppCompatActivity() {
 
     override fun onCreateContextMenu(menu: ContextMenu?, v: View?, menuInfo: ContextMenu.ContextMenuInfo?) {
         super.onCreateContextMenu(menu, v, menuInfo)
-        menu!!.add("Remover")
+        this.menuInflater.inflate(R.menu.activity_student_list_view_menu, menu)
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        val student: Student = arrayAdapter.getItem(menuInfo.position)!!
-        this.removeStudent(student)
+        when(item.itemId) {
+            R.id.activity_student_list_menu_remove -> this.removeStudent(captureStudent(item))
+            R.id.activity_student_list_menu_edit -> this.editStudent(captureStudent(item))
+        }
+
         return super.onContextItemSelected(item)
     }
 
     override fun onResume() {
         super.onResume()
         update()
+    }
+
+    private fun captureStudent(item: MenuItem): Student {
+        val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
+        val student: Student = arrayAdapter.getItem(menuInfo.position)!!
+        return student
     }
 
     private fun update() {
@@ -59,17 +68,19 @@ class StudentListActivity: AppCompatActivity() {
     private fun configureListView() {
         val studentsListView: ListView = findViewById(R.id.activity_student_list)
         initAdapter(studentsListView)
-        initListeners(studentsListView)
         registerForContextMenu(studentsListView)
     }
 
-    private fun initListeners(studentsListView: ListView) {
-        studentsListView.onItemClickListener = StudentListViewListener(this)
-    }
 
     private fun initAdapter(studentsListView: ListView) {
         arrayAdapter = ArrayAdapter(this, android.R.layout.simple_expandable_list_item_1)
         studentsListView.adapter = arrayAdapter
+    }
+
+    private fun editStudent(student: Student) {
+        val intent = Intent(this, StudentFormActivity::class.java)
+        intent.putExtra("student", student)
+        startActivity(intent)
     }
 
     private fun removeStudent(student: Student) {
