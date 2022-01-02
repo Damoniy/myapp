@@ -11,19 +11,19 @@
               android:layout_height="wrap_content"
               android:layout_margin="8dp"
               android:inputType="textCapWords"
-              android:hint="Nome" />
+              android:hint="@string/nome" android:importantForAutofill="no"/>
 
     <EditText android:id="@+id/activity_student_form_email"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_margin="8dp"
               android:inputType="textEmailAddress"
-              android:hint="E-mail" tools:ignore="TextFields"/>
+              android:hint="@string/e_mail" tools:ignore="TextFields" android:importantForAutofill="no"/>
 
     <EditText android:id="@+id/activity_student_form_tel"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:layout_margin="8dp"
               android:inputType="phone"
-              android:hint="Telefone" />
+              android:hint="@string/telefone" android:importantForAutofill="no"/>
 </LinearLayout>

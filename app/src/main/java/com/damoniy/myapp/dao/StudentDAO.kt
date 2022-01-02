@@ -1,5 +1,6 @@
 package com.damoniy.myapp.dao
 
+import android.util.Log
 import com.damoniy.myapp.model.Student
 
 class StudentDAO: DAO<Student> {
@@ -31,6 +32,7 @@ class StudentDAO: DAO<Student> {
     }
 
     override fun getObjectList(): List<Student>{
+        println("called")
         return ArrayList(students)
     }
 

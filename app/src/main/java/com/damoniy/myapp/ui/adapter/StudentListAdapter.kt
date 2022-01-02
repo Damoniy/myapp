@@ -1,6 +1,7 @@
-package com.damoniy.myapp.view.adapter
+package com.damoniy.myapp.ui.adapter
 
 import android.app.Activity
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,7 +10,7 @@ import android.widget.TextView
 import com.damoniy.myapp.R
 import com.damoniy.myapp.model.Student
 
-class StudentListAdapter(private val activity: Activity) : BaseAdapter() {
+class StudentListAdapter(private val context: Context) : BaseAdapter() {
 
     private val students: ArrayList<Student> = ArrayList()
 
@@ -28,6 +29,7 @@ class StudentListAdapter(private val activity: Activity) : BaseAdapter() {
     fun update(list: List<Student>) {
         students.clear()
         students.addAll(list)
+        this.notifyDataSetChanged()
     }
 
     fun remove(student: Student) {
@@ -49,5 +51,5 @@ class StudentListAdapter(private val activity: Activity) : BaseAdapter() {
     }
 
     private fun setupView(view: View?, viewGroup: ViewGroup?) =
-        view ?: LayoutInflater.from(activity).inflate(R.layout.item_student, viewGroup, false)
+        view ?: LayoutInflater.from(context).inflate(R.layout.item_student, viewGroup, false)
 }

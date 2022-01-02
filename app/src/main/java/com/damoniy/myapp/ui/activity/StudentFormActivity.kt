@@ -1,4 +1,4 @@
-package com.damoniy.myapp.view.activity
+package com.damoniy.myapp.ui.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -12,13 +12,12 @@ import com.damoniy.myapp.model.factory.StudentFactory
 import com.damoniy.myapp.persistence.Persistence
 
 class StudentFormActivity : AppCompatActivity() {
-
     private val keyExtra: String = "student"
     private val titleEditStudent: String = "Editar aluno"
     private val titleNewStudent: String = "Cadastrar novo aluno"
-    private val factory: AbstractFactory<StudentFormActivity> = StudentFactory()
-
-    var student: Student? = null
+    private val studentFactory: AbstractFactory<Student> = StudentFactory(this)
+    private val studentDAO = Persistence.studentDAO
+    private var student: Student? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,40 +31,55 @@ class StudentFormActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
+        when (item.itemId) {
             R.id.activity_student_formulary_menu_save -> finishFormulary()
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun finishFormulary() {
-        val studentDAO = Persistence.studentDAO
-        factory.create(this)
-
-        if(this.student!!.hasValidId()) {
-            studentDAO.edit(this.student!!)
-        } else {
-            studentDAO.save(this.student!!)
-        }
-
+        if (student == null) student = studentFactory.create()
+        this.fillStudentFields()
+        this.takeFinishProperAction()
         this.finish()
     }
 
+    private fun takeFinishProperAction() {
+        if (this.student!!.hasValidId()) {
+            return studentDAO.edit(this.student!!)
+        }
+        return studentDAO.save(this.student!!)
+    }
+
     private fun update() {
-        if(intent.hasExtra(keyExtra)) {
+        if (intent.hasExtra(keyExtra)) {
             student = intent.getSerializableExtra(keyExtra) as Student
-            fillFields()
+            fillViewFields()
             this.title = titleEditStudent
         } else {
-            student = Student()
+            student = studentFactory.create()
             this.title = titleNewStudent
         }
     }
 
-    private fun fillFields() {
+    private fun fillStudentFields() {
+        val name = getViewTextById(R.id.activity_student_form_name)
+        val email = getViewTextById(R.id.activity_student_form_email)
+        val tel = getViewTextById(R.id.activity_student_form_tel)
+
+        student!!.name = name
+        student!!.email = email
+        student!!.tel = tel
+    }
+
+    private fun getViewTextById(id: Int): String {
+        return findViewById<TextView>(id).text.toString()
+    }
+
+    private fun fillViewFields() {
         val name: TextView = findViewById(R.id.activity_student_form_name)
-        val email:TextView = findViewById((R.id.activity_student_form_email))
-        val tel:TextView = findViewById((R.id.activity_student_form_tel))
+        val email: TextView = findViewById((R.id.activity_student_form_email))
+        val tel: TextView = findViewById((R.id.activity_student_form_tel))
 
         name.text = student!!.name
         email.text = student!!.email
