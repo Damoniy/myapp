@@ -1,4 +1,4 @@
-package com.damoniy.myapp.factories
+package com.damoniy.myapp.model.factory
 
 interface AbstractFactory<T> {
     fun create(activity: T)

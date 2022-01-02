@@ -1,4 +1,4 @@
-package com.damoniy.myapp.ui.activities
+package com.damoniy.myapp.view.activity
 
 import android.os.Bundle
 import android.view.Menu
@@ -7,8 +7,8 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.damoniy.myapp.R
 import com.damoniy.myapp.model.Student
-import com.damoniy.myapp.factories.AbstractFactory
-import com.damoniy.myapp.factories.StudentFactory
+import com.damoniy.myapp.model.factory.AbstractFactory
+import com.damoniy.myapp.model.factory.StudentFactory
 import com.damoniy.myapp.persistence.Persistence
 
 class StudentFormActivity : AppCompatActivity() {

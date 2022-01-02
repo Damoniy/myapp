@@ -1,8 +1,8 @@
-package com.damoniy.myapp.factories
+package com.damoniy.myapp.model.factory
 
 import android.widget.TextView
 import com.damoniy.myapp.R
-import com.damoniy.myapp.ui.activities.StudentFormActivity
+import com.damoniy.myapp.view.activity.StudentFormActivity
 
 class StudentFactory: AbstractFactory<StudentFormActivity> {
     override fun create(activity: StudentFormActivity) {

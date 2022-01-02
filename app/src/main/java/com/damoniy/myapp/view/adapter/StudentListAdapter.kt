@@ -1,4 +1,4 @@
-package com.damoniy.myapp.ui.activities
+package com.damoniy.myapp.view.adapter
 
 import android.app.Activity
 import android.view.LayoutInflater
@@ -25,29 +25,29 @@ class StudentListAdapter(private val activity: Activity) : BaseAdapter() {
         return students[position].id.toLong()
     }
 
-    fun clear() {
+    fun update(list: List<Student>) {
         students.clear()
-    }
-
-    fun addAll(list: List<Student>) {
         students.addAll(list)
     }
 
     fun remove(student: Student) {
         students.remove(student)
+        this.notifyDataSetChanged()
     }
 
     override fun getView(position: Int, view: View?, viewGroup: ViewGroup?): View {
-        val newView: View = view ?: LayoutInflater.from(activity).inflate(R.layout.item_student, viewGroup, false)
-        val name: TextView = newView.findViewById(R.id.item_student_name)
-        val email: TextView = newView.findViewById(R.id.item_student_email)
-        fillFields(position, name, email)
+        val newView: View = setupView(view, viewGroup)
+        fillFields(newView, this.getItem(position))
         return newView
     }
 
-    private fun fillFields(position: Int, name: TextView, email: TextView) {
-        val student = students[position]
+    private fun fillFields(view: View, student: Student) {
+        val name: TextView = view.findViewById(R.id.item_student_name)
+        val email: TextView = view.findViewById(R.id.item_student_email)
         name.text = student.name
         email.text = student.email
     }
+
+    private fun setupView(view: View?, viewGroup: ViewGroup?) =
+        view ?: LayoutInflater.from(activity).inflate(R.layout.item_student, viewGroup, false)
 }

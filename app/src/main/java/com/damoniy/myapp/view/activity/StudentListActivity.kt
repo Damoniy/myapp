@@ -1,4 +1,4 @@
-package com.damoniy.myapp.ui.activities
+package com.damoniy.myapp.view.activity
 
 import android.content.Intent
 import android.os.Bundle
@@ -11,7 +11,8 @@ import androidx.appcompat.app.AppCompatActivity
 import com.damoniy.myapp.R
 import com.damoniy.myapp.model.Student
 import com.damoniy.myapp.persistence.Persistence
-import com.damoniy.myapp.ui.activities.views.listeners.StudentFormularyButtonListener
+import com.damoniy.myapp.view.adapter.StudentListAdapter
+import com.damoniy.myapp.view.listener.StudentFormularyButtonListener
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class StudentListActivity: AppCompatActivity() {
@@ -20,6 +21,7 @@ class StudentListActivity: AppCompatActivity() {
     private val studentDAO = Persistence.studentDAO
 
     private val ACTIVITY_TITLE = "Student's List"
+    private val STUDENT_KEY = "student"
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -35,27 +37,30 @@ class StudentListActivity: AppCompatActivity() {
     }
 
     override fun onContextItemSelected(item: MenuItem): Boolean {
-        when(item.itemId) {
-            R.id.activity_student_list_menu_remove -> this.removeStudent(captureStudent(item))
-            R.id.activity_student_list_menu_edit -> this.editStudent(captureStudent(item))
-        }
-
+        this.setMenuItemBehavior(item)
         return super.onContextItemSelected(item)
     }
 
     override fun onResume() {
         super.onResume()
-        update()
+        this.update()
+    }
+
+    private fun setMenuItemBehavior(item: MenuItem) {
+        when (item.itemId) {
+            R.id.activity_student_list_menu_remove -> this.removeStudent(captureStudent(item))
+            R.id.activity_student_list_menu_edit -> this.editStudent(captureStudent(item))
+        }
     }
 
     private fun captureStudent(item: MenuItem): Student {
         val menuInfo = item.menuInfo as AdapterView.AdapterContextMenuInfo
-        return adapter.getItem(menuInfo.position)
+        val student: Student = adapter.getItem(menuInfo.position)
+        return student
     }
 
     private fun update() {
-        this.adapter.clear()
-        this.adapter.addAll(studentDAO.getObjectList())
+        this.adapter.update(studentDAO.getObjectList())
     }
 
     private fun createButton() {
@@ -65,23 +70,23 @@ class StudentListActivity: AppCompatActivity() {
 
     private fun configureListView() {
         val studentsListView: ListView = findViewById(R.id.activity_student_list)
-        initAdapter(studentsListView)
-        registerForContextMenu(studentsListView)
+        this.initAdapter(studentsListView)
+        this.registerForContextMenu(studentsListView)
     }
 
     private fun initAdapter(studentsListView: ListView) {
-        adapter = StudentListAdapter(this)
+        this.adapter = StudentListAdapter(this)
         studentsListView.adapter = adapter
     }
 
     private fun editStudent(student: Student) {
         val intent = Intent(this, StudentFormActivity::class.java)
-        intent.putExtra("student", student)
-        startActivity(intent)
+        intent.putExtra(STUDENT_KEY, student)
+        this.startActivity(intent)
     }
 
     private fun removeStudent(student: Student) {
-        Persistence.studentDAO.remove(student)
+        studentDAO.remove(student)
         this.adapter.remove(student)
     }
 }
