@@ -42,7 +42,7 @@ class StudentsView(private val context: Activity) {
         this.adapter.remove(student)
     }
 
-    fun attachAdapter(studentsListView: ListView) {
+    private fun attachAdapter(studentsListView: ListView) {
         studentsListView.adapter = adapter
     }
 
@@ -55,5 +55,20 @@ class StudentsView(private val context: Activity) {
         val intent = Intent(context, StudentFormActivity::class.java)
         intent.putExtra(studentKey, student)
         context.startActivity(intent)
+    }
+
+    fun configureListView() {
+        val studentsListView: ListView = context.findViewById(R.id.activity_student_list)
+        this.attachAdapter(studentsListView)
+        context.registerForContextMenu(studentsListView)
+    }
+
+    fun setMenuItemBehavior(item: MenuItem) {
+        when (item.itemId) {
+            R.id.activity_student_list_menu_remove ->
+                this.confirmRemoval(this.captureStudent(item))
+            R.id.activity_student_list_menu_edit ->
+                this.editStudent(this.captureStudent(item))
+        }
     }
 }
